@@ -39,12 +39,8 @@ class AlbumFragment : Fragment() {
            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 3 else 6,
             RecyclerView.VERTICAL, false)
 
-        //RecyclerViewの準備してアダプターの設定したりUI用のデコレーションを設定したりします
+        //RecyclerViewの準備してアダプターの設定します
         view.album_recycler_view.adapter = adapter
-        view.album_recycler_view.addItemDecoration(ProductGridItemDecoration(
-            resources.getDimensionPixelSize(R.dimen.recycler_view_right_padding),
-            resources.getDimensionPixelSize(R.dimen.recycler_view_left_padding),
-            resources.getDimensionPixelSize(R.dimen.recycler_view_top_padding)))
 
         return view
     }
