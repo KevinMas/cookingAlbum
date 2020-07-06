@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Cooking Album</string>
+    <string name="record_content_description">画像</string>
+    <string name="record_type_content_description">食のタイプ</string>
 </resources>

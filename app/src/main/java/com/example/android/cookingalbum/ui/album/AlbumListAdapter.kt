@@ -1,6 +1,5 @@
 package com.example.android.cookingalbum.ui.album
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.album_card_view.view.*
  * アルバムのリスト用のアダプタークラスです。
  * PagedListAdapterを使って少しずつデータをロードします。
  */
-class AlbumListAdapter
+class AlbumListAdapter (val onclick: (recordPosition: Int) -> Unit )
     : PagedListAdapter<Record, AlbumListAdapter.AlbumHolder>(Record.DIFF_CALLBACK) {
 
     /**
@@ -35,6 +34,8 @@ class AlbumListAdapter
         Picasso.get()
             .load(getItem(position)?.imageUrl)
             .into(holder.albumImage)
+        // アイテムをクリックする処理の準備
+        holder.itemView.setOnClickListener {onclick(position) }
     }
 
     class AlbumHolder(view: View) : RecyclerView.ViewHolder(view) {

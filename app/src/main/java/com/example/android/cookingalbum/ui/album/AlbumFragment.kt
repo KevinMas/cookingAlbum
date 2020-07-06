@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cookingalbum.R
 import com.example.android.cookingalbum.model.Record
+import com.example.android.cookingalbum.ui.album.details.DetailsFragment
 import kotlinx.android.synthetic.main.album_fragment.view.*
 
 /**
@@ -25,13 +28,25 @@ class AlbumFragment : Fragment() {
     }
 
     // RecyclerView用のアダプター
-    private val adapter = AlbumListAdapter()
+    private val adapter = AlbumListAdapter { position ->
+        viewModel.currentPosition = position
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, DetailsFragment.newInstance())
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack("AlbumFragment")
+            .commit()
+    }
+
     // アルバム用のViewModel
-    private val viewModel by lazy { ViewModelProvider(this).get(AlbumViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProvider(requireActivity()).get(AlbumViewModel::class.java) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.album_fragment, container, false)
+
+        requireActivity().actionBar?.setDisplayHomeAsUpEnabled(false)
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        requireActivity().setActionBar(toolbar)
 
         // RecyclerViewはGridLayoutで表示するようにマネージャー準備する
         // 肖像画であれば3カルムにしたりランドスケープであれば6カルムにしたりしています
